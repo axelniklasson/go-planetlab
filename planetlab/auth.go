@@ -26,7 +26,7 @@ func GetClientAuth(username string, password string) Auth {
 	}
 }
 
-// GetClient creates and returns
+// GetClient creates and returns a client to use with the API
 func GetClient() *xmlrpc.Client {
 	if clientInstance == nil {
 		clientInstance, err := xmlrpc.NewClient(plAPIURL, nil)

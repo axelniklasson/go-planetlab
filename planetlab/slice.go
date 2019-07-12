@@ -32,6 +32,8 @@ const getSlicesMethod = "GetSlices"
 const updateSliceMethod = "UpdateSlice"
 
 // GetSlices returns a slice of Slices containing details about slices
+//
+// URL: https://www.planet-lab.org/doc/plc_api#GetSlices
 func GetSlices(auth Auth, sliceFilter interface{}) ([]Slice, error) {
 	client := GetClient()
 	args := make([]interface{}, 2)
@@ -48,11 +50,15 @@ func GetSlices(auth Auth, sliceFilter interface{}) ([]Slice, error) {
 }
 
 // UpdateSlice updates the parameters of an existing slice
-func UpdateSlice(auth Auth, s Slice, sliceFields interface{}) error {
+// Note that the API offers slice identification by either name or id, however
+// only id is supported in this implementation since that makes more sense
+//
+// URL: https://www.planet-lab.org/doc/plc_api#UpdateSlice
+func UpdateSlice(auth Auth, sliceID int, sliceFields interface{}) error {
 	client := GetClient()
 	args := make([]interface{}, 3)
 	args[0] = auth
-	args[1] = s.SliceID
+	args[1] = sliceID
 	args[2] = sliceFields
 
 	var result int

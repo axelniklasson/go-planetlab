@@ -33,6 +33,8 @@ func (n Node) String() string {
 }
 
 // GetNodes returns a slice of Nodes containing details about nodes
+//
+// URL: https://www.planet-lab.org/doc/plc_api#GetNodes
 func GetNodes(auth Auth, nodeFilter interface{}) ([]Node, error) {
 	return []Node{}, nil
 }
