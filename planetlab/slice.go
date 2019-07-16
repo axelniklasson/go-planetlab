@@ -27,10 +27,6 @@ func (s Slice) String() string {
 	return fmt.Sprintf("Slice - SliceID: %d, SiteID: %d, NodeIDs: %v, URL: %s", s.SliceID, s.SiteID, s.NodeIDs, s.URL)
 }
 
-// API methods
-const getSlicesMethod = "GetSlices"
-const updateSliceMethod = "UpdateSlice"
-
 // GetSlices returns a slice of Slices containing details about slices
 //
 // URL: https://www.planet-lab.org/doc/plc_api#GetSlices
