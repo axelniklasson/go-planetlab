@@ -2,6 +2,7 @@ package planetlab
 
 import (
 	"log"
+	"os"
 
 	"github.com/kolo/xmlrpc"
 )
@@ -9,6 +10,9 @@ import (
 var clientInstance *xmlrpc.Client
 
 const plAPIURL = "https://www.planet-lab.eu/PLCAPI/"
+const plUsername = "PL_USERNAME"
+const plPassword = "PL_PASSWORD"
+const authCheckMethod = "AuthCheck"
 
 // Auth models the authentication object to use when authenticating against PL API
 type Auth struct {
@@ -24,6 +28,33 @@ func GetClientAuth(username string, password string) Auth {
 		username,
 		password,
 	}
+}
+
+// Authenticate can be used to test that the Auth object successfully can authenticate with the API
+func (a Auth) Authenticate() error {
+	client := GetClient()
+	args := make([]interface{}, 1)
+	args[0] = a
+	var success int
+
+	err := client.Call(authCheckMethod, args, &success)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// GetTestAuth returns an Auth object to be used during testing
+func GetTestAuth() Auth {
+	username := os.Getenv(plUsername)
+	password := os.Getenv(plPassword)
+
+	if username == "" || password == "" {
+		log.Fatal("Could not load PL API credentials. Make sure both PL_USERNAME and PL_PASSWORD env variables are set.")
+	}
+
+	return GetClientAuth(username, password)
 }
 
 // GetClient creates and returns a client to use with the API

@@ -49,6 +49,38 @@ func GetSlices(auth Auth, sliceFilter interface{}) ([]Slice, error) {
 	return slices, nil
 }
 
+// GetSliceByID is a wrapper around GetSlices that makes it easier to fetch a slice using its ID
+func GetSliceByID(auth Auth, sliceID int) (*Slice, error) {
+	sliceFilter := struct {
+		SliceID int `xmlrpc:"slice_id"`
+	}{sliceID}
+
+	slices, err := GetSlices(auth, sliceFilter)
+	if err != nil {
+		return nil, err
+	} else if len(slices) != 1 {
+		return nil, fmt.Errorf("Got %d slices matching filter %v", len(slices), sliceFilter)
+	}
+
+	return &slices[0], nil
+}
+
+// GetSliceByName is a wrapper around GetSlices that makes it easier to fetch a slice using its name
+func GetSliceByName(auth Auth, name string) (*Slice, error) {
+	sliceFilter := struct {
+		Name string `xmlrpc:"name"`
+	}{name}
+
+	slices, err := GetSlices(auth, sliceFilter)
+	if err != nil {
+		return nil, err
+	} else if len(slices) != 1 {
+		return nil, fmt.Errorf("Got %d slices matching filter %v", len(slices), sliceFilter)
+	}
+
+	return &slices[0], nil
+}
+
 // UpdateSlice updates the parameters of an existing slice
 // Note that the API offers slice identification by either name or id, however
 // only id is supported in this implementation since that makes more sense

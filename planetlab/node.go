@@ -32,9 +32,55 @@ func (n Node) String() string {
 	return fmt.Sprintf("Node - NodeID: %d, Hostname: %s Boot state: %s", n.NodeID, n.HostName, n.BootState)
 }
 
+// API methods
+const getNodesMethod = "GetNodes"
+
 // GetNodes returns a slice of Nodes containing details about nodes
 //
 // URL: https://www.planet-lab.org/doc/plc_api#GetNodes
 func GetNodes(auth Auth, nodeFilter interface{}) ([]Node, error) {
-	return []Node{}, nil
+	client := GetClient()
+	args := make([]interface{}, 2)
+	args[0] = auth
+	args[1] = nodeFilter
+	nodes := []Node{}
+
+	err := client.Call(getNodesMethod, args, &nodes)
+	if err != nil {
+		return nil, err
+	}
+
+	return nodes, nil
+}
+
+// GetNodeByID is a wrapper around GetNodes that makes it easier to fetch a node using its ID
+func GetNodeByID(auth Auth, nodeID int) (*Node, error) {
+	nodeFilter := struct {
+		NodeID int `xmlrpc:"node_id"`
+	}{nodeID}
+
+	nodes, err := GetNodes(auth, nodeFilter)
+	if err != nil {
+		return nil, err
+	} else if len(nodes) != 1 {
+		return nil, fmt.Errorf("Got %d nodes matching filter %v", len(nodes), nodeFilter)
+	}
+
+	return &nodes[0], nil
+}
+
+// GetNodeByHostName is a wrapper around GetNodes that makes it easier to fetch a node using its hostname
+func GetNodeByHostName(auth Auth, hostname string) (*Node, error) {
+	nodeFilter := struct {
+		Hostname string `xmlrpc:"hostname"`
+	}{hostname}
+
+	nodes, err := GetNodes(auth, nodeFilter)
+	if err != nil {
+		return nil, err
+	} else if len(nodes) != 1 {
+		return nil, fmt.Errorf("Got %d nodes matching filter %v", len(nodes), nodeFilter)
+	}
+
+	return &nodes[0], nil
 }
