@@ -32,9 +32,6 @@ func (n Node) String() string {
 	return fmt.Sprintf("Node - NodeID: %d, Hostname: %s Boot state: %s", n.NodeID, n.HostName, n.BootState)
 }
 
-// API methods
-const getNodesMethod = "GetNodes"
-
 // GetNodes returns a slice of Nodes containing details about nodes
 //
 // URL: https://www.planet-lab.org/doc/plc_api#GetNodes

@@ -27,10 +27,6 @@ func (s Slice) String() string {
 	return fmt.Sprintf("Slice - SliceID: %d, SiteID: %d, NodeIDs: %v, URL: %s", s.SliceID, s.SiteID, s.NodeIDs, s.URL)
 }
 
-// API methods
-const getSlicesMethod = "GetSlices"
-const updateSliceMethod = "UpdateSlice"
-
 // GetSlices returns a slice of Slices containing details about slices
 //
 // URL: https://www.planet-lab.org/doc/plc_api#GetSlices
@@ -83,7 +79,7 @@ func GetSliceByName(auth Auth, name string) (*Slice, error) {
 
 // UpdateSlice updates the parameters of an existing slice
 // Note that the API offers slice identification by either name or id, however
-// only id is supported in this implementation since that makes more sense
+// only id is supported in this implementation since that is cleaner
 //
 // URL: https://www.planet-lab.org/doc/plc_api#UpdateSlice
 func UpdateSlice(auth Auth, sliceID int, sliceFields interface{}) error {

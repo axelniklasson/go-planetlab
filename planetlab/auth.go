@@ -9,11 +9,6 @@ import (
 
 var clientInstance *xmlrpc.Client
 
-const plAPIURL = "https://www.planet-lab.eu/PLCAPI/"
-const plUsername = "PL_USERNAME"
-const plPassword = "PL_PASSWORD"
-const authCheckMethod = "AuthCheck"
-
 // Auth models the authentication object to use when authenticating against PL API
 type Auth struct {
 	AuthMethod string

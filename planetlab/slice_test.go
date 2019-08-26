@@ -43,5 +43,28 @@ func TestGetSliceByName(t *testing.T) {
 }
 
 func TestUpdateSlice(t *testing.T) {
+	auth := GetTestAuth()
+	const memberSliceName = "chalmersple_2018_10_29"
 
+	slice, err := GetSliceByName(auth, memberSliceName)
+	assert.NilError(t, err)
+	originalURL := slice.URL
+
+	// update name of slice
+	newURL := "https://chalmers.se"
+	updateFields := struct {
+		URL string `xmlrpc:"url"`
+	}{newURL}
+	err = UpdateSlice(auth, slice.SliceID, updateFields)
+	assert.NilError(t, err)
+
+	// fetch slice from API again and check updated name
+	slice, err = GetSliceByID(auth, slice.SliceID)
+	assert.NilError(t, err)
+	assert.Assert(t, slice.URL == newURL)
+
+	// restore slice to original name
+	updateFields.URL = originalURL
+	err = UpdateSlice(auth, slice.SliceID, updateFields)
+	assert.NilError(t, err)
 }
