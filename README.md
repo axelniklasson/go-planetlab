@@ -28,8 +28,7 @@ func main() {
     log.Fatal(err)
   }
 
-  // maybe do something more interesting with slices than printing it
-  fmt.Println(slices[0].SliceID) // Output: 1578
+  // do something interesting with the found slices
 }
 
 ```
